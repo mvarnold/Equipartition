@@ -61,7 +61,7 @@ def hot_firebreaks(max_x,max_y):
 	x = x*(dimx-2*pixel_gap)+pixel_gap
 	y *=1/64
 	y = y*(dimy-2*pixel_gap)+pixel_gap
-	np.savetxt('cart-1.2.2/'+'xy'+str(dimx)+str(dimy)+'hot1.dat',np.c_[x,y],fmt='%10.8f %10.8f')
+	np.savetxt('cart-1.2.2/'+'xy'+str(dimx)+str(dimy)+'hot0.dat',np.c_[x,y],fmt='%10.8f %10.8f')
 	return
 
 def generate_dist(n,dist_type):
