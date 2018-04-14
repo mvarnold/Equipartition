@@ -45,6 +45,25 @@ def process_args(args):
 	print(plot)
 	return n,dist_type,dimx,dimy,pixel_gap,plot
 
+def hot_firebreaks(max_x,max_y):
+	""" Create data file for firebreak xy position"""
+	HOT = np.genfromtxt("optimal_forests/optimal_forest_L64_DL.csv",delimiter=",")
+	
+	HOT_data= np.zeros([1,2])
+	for i,x in enumerate(HOT):
+	    for j,y in enumerate(x):
+	        if y==0:
+	            HOT_data = np.append(HOT_data,np.array([[i,j]]),axis=0)
+	HOT_data=HOT_data[1:,:]
+	x = HOT_data[:,0]
+	y = HOT_data[:,1]
+	x *= 1/64
+	x = x*(dimx-2*pixel_gap)+pixel_gap
+	y *=1/64
+	y = y*(dimy-2*pixel_gap)+pixel_gap
+	np.savetxt('cart-1.2.2/'+'xy'+str(dimx)+str(dimy)+'hot1.dat',np.c_[x,y],fmt='%10.8f %10.8f')
+	return
+
 def generate_dist(n,dist_type):
 
 	if dist_type == 'exp':
@@ -67,6 +86,23 @@ def generate_dist(n,dist_type):
 		y = np.abs(stats.norm.rvs(size = n))
 		y *=1/np.max(y)
 		y = y*(dimy-2*pixel_gap)+pixel_gap
+		return x,y
+	elif dist_type == "hot":
+		sig=10
+		#x = np.sqrt(2*sig)*sp.erfinv(2*np.random.rand(n)+1)#*(dimx-2*pixel_gap)+pixel_gap
+		#y = np.sqrt(2*sig)*sp.erfinv(2*np.random.rand(n)+1)#*(dimy-2*pixel_gap)+pixel_gap
+		
+		x = np.abs(stats.norm.rvs(size = n,scale=64))
+		max_x=np.max(x)
+		x *= 1/np.max(x)
+		x=x*(dimx-2*pixel_gap)+pixel_gap
+		
+		y = np.abs(stats.norm.rvs(size = n,scale=64))
+		max_y=np.max(y)
+		y *=1/np.max(y)
+		y = y*(dimy-2*pixel_gap)+pixel_gap
+
+		hot_firebreaks(max_x,max_y)
 		return x,y
 	else:
 		print("Error: distribution not recognized")
