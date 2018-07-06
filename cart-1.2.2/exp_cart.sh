@@ -1,2 +1,2 @@
-#!/usr/bin/env bash
-./cart 512 512 512512HOT_gaussian.dat HOT_gaussianout.dat
+#!/bin/sh
+./cart 512 512 512512exp.dat expout.dat
